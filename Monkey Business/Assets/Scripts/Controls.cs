@@ -13,7 +13,7 @@ public class Controls : MonoBehaviour
     GameObject jump;
 
     #region PC Controls
-    private InputMap inputMap = new InputMap();
+    private InputMap inputMap;
 
     private void OnEnable()
     {
@@ -27,12 +27,17 @@ public class Controls : MonoBehaviour
 
     private void Start()
     {
-        //inputMap.Default.Left += _ => LeftFunc();
+        inputMap.Default.Left.performed += _ => LeftFunc(true);
+        inputMap.Default.Left.canceled += _ => LeftFunc(false);
+        inputMap.Default.Right.performed += _ => RightFunc(true);
+        inputMap.Default.Right.canceled += _ => RightFunc(false);
+        inputMap.Default.Jump.performed += _ => JumpFunc();
     }
     #endregion
 
     private void Awake()
     {
+        inputMap = new InputMap();
         playerMovement = player.GetComponent<Movement>();
     }
 
@@ -59,7 +64,14 @@ public class Controls : MonoBehaviour
         }
         else
         {
-            playerMovement.MoveInput(-input);
+            if(playerMovement.movementInput == input)
+            {
+                playerMovement.MoveInput(0);
+            }
+            else
+            {
+                playerMovement.MoveInput(input);
+            }
         }
     }
 }

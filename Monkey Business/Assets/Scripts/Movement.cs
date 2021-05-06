@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
 
     public void MoveInput(float input)
     {
-        movementInput += input;
+        movementInput = input;
     }
 
     public void Jump(float jumpSpeed, bool forcedJump)
