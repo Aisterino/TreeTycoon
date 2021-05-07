@@ -64,6 +64,8 @@ public class Controls : MonoBehaviour
         }
         else
         {
+            playerMovement.MoveInput(-input);
+            /*
             if(playerMovement.movementInput == input)
             {
                 playerMovement.MoveInput(0);
@@ -72,6 +74,7 @@ public class Controls : MonoBehaviour
             {
                 playerMovement.MoveInput(input);
             }
+            */
         }
     }
 }
