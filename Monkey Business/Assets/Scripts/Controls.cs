@@ -56,6 +56,11 @@ public class Controls : MonoBehaviour
         playerMovement.Jump(0, false);
     }
 
+    public void PickUp()
+    {
+        playerMovement.PickUp();
+    }
+
     private void Move(bool isDown, float input)
     {
         if (isDown)
@@ -65,16 +70,6 @@ public class Controls : MonoBehaviour
         else
         {
             playerMovement.MoveInput(-input);
-            /*
-            if(playerMovement.movementInput == input)
-            {
-                playerMovement.MoveInput(0);
-            }
-            else
-            {
-                playerMovement.MoveInput(input);
-            }
-            */
         }
     }
 }

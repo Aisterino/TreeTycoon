@@ -6,23 +6,30 @@ public class Movement : MonoBehaviour
 {
     public LayerMask canJumpOnMask;
     public float movementInput = 0f;
+    public AnimationClip pickUpAnimClip;
     private float speed = 4f;
     private float jumpSpeed = 5f;
     private Rigidbody2D rb;
     private Collider2D collider;
     private bool canJump;
+    private Animator animator;
+    private bool isBusy = false;
+    private GameObject pickCollider;
     
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+        animator = transform.Find("Sprite").GetComponent<Animator>();
+        pickCollider = transform.Find("PickUpCollider").gameObject;
     }
 
     void Update()
     {   
-        if (movementInput != 0)
+        if (movementInput != 0 && !isBusy)
         {
-            //animator.SetBool("Walking", true);
+            animator.SetBool("Walking", true);
             if (movementInput < 0)
             {
                 transform.transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
@@ -31,16 +38,18 @@ public class Movement : MonoBehaviour
             {
                 transform.transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
-
         }
         else
         {
-            //animator.SetBool("Walking", false);
+            animator.SetBool("Walking", false);
         }
 
-        Vector3 currentPosition = transform.position;
-        currentPosition.x += movementInput * speed * Time.deltaTime;
-        transform.position = currentPosition;
+        if(!isBusy)
+        {
+            Vector3 currentPosition = transform.position;
+            currentPosition.x += movementInput * speed * Time.deltaTime;
+            transform.position = currentPosition;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -73,11 +82,27 @@ public class Movement : MonoBehaviour
             jumpSpeed = this.jumpSpeed;
         }
 
-        if (canJump || forcedJump)
+        if ((canJump && !isBusy) || forcedJump)
         {
             canJump = false;
             rb.AddForce(new Vector2(0, jumpSpeed), ForceMode2D.Impulse);
-            //animator.SetTrigger("Jump");
+            animator.SetTrigger("Jump");
         }
+    }
+
+    public void PickUp()
+    {
+        if(!isBusy)
+        {
+            animator.SetTrigger("PickUp");
+            StartCoroutine(pickUpTimer(pickUpAnimClip.length));
+        }
+    }
+
+    IEnumerator pickUpTimer(float time)
+    {
+        pickCollider.SetActive(true);
+        yield return new WaitForSeconds(time);
+        pickCollider.SetActive(false);
     }
 }
