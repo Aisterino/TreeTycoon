@@ -17,10 +17,6 @@ public class PickUpCollider : MonoBehaviour
     {
         GameObject collisionObj = collision.gameObject;
 
-        Debug.Log(collisionObj.name);
-
-        Debug.Log(collisionObj.layer + "!=" + trashLayer.value);
-
         if(((1<<collisionObj.layer) & trashLayer.value) != 0)
         {
             Debug.Log("1");

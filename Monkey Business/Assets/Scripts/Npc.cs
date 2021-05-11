@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Npc : MonoBehaviour
 {
-    float direction = 1;
-    float speed = 1.5f;
+    public float direction = 1;
+    [SerializeField] private float speed = 1.5f;
     Animator animator;
     float trashDropTime;
     float[] trashDropTimeRange = { 5, 100 };
-    float litteringRate = 1f;
+    [SerializeField] private float litteringRate = 1f;
 
 
     private void Awake()
@@ -43,8 +43,6 @@ public class Npc : MonoBehaviour
 
     private void dropTrash()
     {
-        Debug.Log("Droped trash");
-        Debug.Log(Storage.Instance);
         GameObject trashObj = Storage.Instance.GetItemR(Storage.itemTypes.Trash);
         trashObj = Instantiate(trashObj, null);
         trashObj.transform.position = transform.position;

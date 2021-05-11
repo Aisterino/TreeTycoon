@@ -23,6 +23,6 @@ public class Storage : MonoBehaviour
     {
         GameObject itemObj = transform.Find(itemType.ToString()).gameObject;
 
-        return itemObj.transform.GetChild(Random.Range(1, itemObj.transform.childCount)).gameObject;
+        return itemObj.transform.GetChild(Random.Range(0, itemObj.transform.childCount)).gameObject;
     }
 }
