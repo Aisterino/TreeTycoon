@@ -14,7 +14,6 @@ public class Dumpster : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger Enter");
         if (collision.gameObject == playerObj && Player.trash != 0)
         {
             sellButton.SetActive(true);
@@ -23,7 +22,6 @@ public class Dumpster : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Trigger Exit");
         if (collision.gameObject == playerObj)
         {
             sellButton.SetActive(false);

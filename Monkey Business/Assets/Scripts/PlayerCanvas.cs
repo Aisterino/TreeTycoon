@@ -18,11 +18,9 @@ public class PlayerCanvas : MonoBehaviour
         Instance = this;
 
         canvas = transform.Find("Canvas").gameObject;
-        Debug.Log(canvas.name);
         playerTransform = canvas.transform.parent;
         canvasAnimator = canvas.GetComponent<Animator>();
         moneyAddedUI = canvas.transform.Find("MoneyAdded").gameObject;
-        Debug.Log("name = " + moneyAddedUI.name + "parent = " + moneyAddedUI.transform.parent);
         moneyText = moneyAddedUI.GetComponent<TMP_Text>();
     }
 
