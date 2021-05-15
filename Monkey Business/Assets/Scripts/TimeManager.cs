@@ -11,9 +11,13 @@ public class TimeManager : MonoBehaviour
     TMP_Text timeText;
     GameObject daysUiObj;
     TMP_Text daysText;
+    float sleepTime = 8;//Hours
+    public static TimeManager Instance;
+    int energyLoseInHour = 6;
 
     private void Awake()
     {
+        Instance = this;
         timeUiObj = transform.Find("TimeUI").gameObject;
         timeText = timeUiObj.GetComponent<TMP_Text>();
         daysUiObj = transform.Find("DaysUI").gameObject;
@@ -25,6 +29,7 @@ public class TimeManager : MonoBehaviour
         time[2] += Time.deltaTime * timeSpeed;
         if(time[2] > 60)
         {
+            Player.LoseEnergy(energyLoseInHour);
             time[1] ++;
             time[2] -= 60;
         }
@@ -50,5 +55,10 @@ public class TimeManager : MonoBehaviour
         }
 
         timeText.text = aditionalNum1 + Mathf.CeilToInt(time[1]) + ":" + aditionalNum2 + Mathf.CeilToInt(time[2]);
+    }
+
+    public void SleepTimer()
+    {
+        time[1] += sleepTime;
     }
 }

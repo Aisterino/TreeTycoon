@@ -30,7 +30,16 @@ public class PlayerCanvas : MonoBehaviour
         Vector2 newScale = canvas.transform.localScale;
         newScale.x = playerScaleX;
         canvas.transform.localScale = newScale; 
-        moneyText.text = "+" + amount + " $";
+
+        if(amount < 0)
+        {
+            moneyText.text = amount + " $";
+        }
+        else
+        {
+            moneyText.text = "+" + amount + " $";
+        }
+        
         canvasAnimator.SetTrigger("Add");
         PlayerInfoUI.PlayerCheck();
     }

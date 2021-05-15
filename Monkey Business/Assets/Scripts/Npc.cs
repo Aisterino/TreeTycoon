@@ -53,6 +53,5 @@ public class Npc : MonoBehaviour
     private void ResestTrDrTm()//Resets trash drop timer
     {
         trashDropTime = Random.Range(trashDropTimeRange[0], trashDropTimeRange[1]);
-        Debug.Log(trashDropTime);
     }
 }

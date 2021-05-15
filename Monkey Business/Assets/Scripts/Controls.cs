@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class Controls : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    private Movement playerMovement;
+    public GameObject moneyAddedCanvas;
+    GameObject moneyAddedObj;
+    Animator moneyAddedAnim;
+    Movement playerMovement;
 
     GameObject left;
     GameObject right;
     GameObject jump;
+    GameObject plantButObj;
+    TMP_Text plantText;
 
     #region PC Controls
     private InputMap inputMap;
@@ -35,10 +41,17 @@ public class Controls : MonoBehaviour
     }
     #endregion
 
-    private void Awake()
+    public static Controls Instance;
+
+private void Awake()
     {
+        Instance = this;
         inputMap = new InputMap();
         playerMovement = player.GetComponent<Movement>();
+        plantButObj = transform.Find("Plant").gameObject;
+        plantText = plantButObj.transform.Find("Text").GetComponent<TMP_Text>();
+        moneyAddedObj = moneyAddedCanvas.transform.Find("MoneyAdded").gameObject;
+        moneyAddedAnim = moneyAddedCanvas.GetComponent<Animator>();
     }
 
     public void LeftFunc(bool isDown)
@@ -65,11 +78,22 @@ public class Controls : MonoBehaviour
     {
         if (isDown)
         {
+            if(moneyAddedObj.activeSelf)
+            {
+                moneyAddedAnim.SetTrigger("Stop");
+            }
+            
             playerMovement.MoveInput(input);
         }
         else
         {
             playerMovement.MoveInput(-input);
         }
+    }
+
+    public void Seeds(int amount)
+    {
+        plantButObj.SetActive(true);
+        plantText.text = "" + amount;
     }
 }
