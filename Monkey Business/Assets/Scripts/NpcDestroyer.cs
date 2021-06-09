@@ -19,9 +19,17 @@ public class NpcDestroyer : MonoBehaviour
     {
         GameObject collisionObj = collision.gameObject;
 
-        if (((1 << collisionObj.layer) & npcLayer.value) != 0 && collisionObj.GetComponent<Npc>().direction == direction)
+        if (((1 << collisionObj.layer) & npcLayer.value) != 0)
         {
-            Destroy(collisionObj);
+            if(collisionObj.GetComponent<Npc>() && collisionObj.GetComponent<Npc>().direction == direction)
+            {
+                Destroy(collisionObj);
+            }   
+        }
+
+        if (collisionObj.GetComponent<MarketNpc>() && collisionObj.GetComponent<MarketNpc>().goingHome == true)
+        {
+            collisionObj.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

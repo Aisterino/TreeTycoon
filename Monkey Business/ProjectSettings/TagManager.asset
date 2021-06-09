@@ -18,8 +18,8 @@ TagManager:
   - Player
   - PickUp
   - Npc
-  - 
-  - 
+  - Interactable
+  - Tree
   - 
   - 
   - 

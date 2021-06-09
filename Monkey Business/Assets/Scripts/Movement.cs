@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public LayerMask canJumpOnMask;
+    public static Movement Instance;
     public float movementInput = 0f;
     public AnimationClip pickUpAnimClip;
     private float speed = 4f;
@@ -23,6 +24,7 @@ public class Movement : MonoBehaviour
         collider = GetComponent<Collider2D>();
         animator = transform.Find("Sprite").GetComponent<Animator>();
         pickCollider = transform.Find("PickUpCollider").gameObject;
+        Instance = this;
     }
 
     void Update()
@@ -104,5 +106,10 @@ public class Movement : MonoBehaviour
         pickCollider.SetActive(true);
         yield return new WaitForSeconds(time);
         pickCollider.SetActive(false);
+    }
+
+    public void LockMoving()
+    {
+        animator.SetBool("Walking", false);
     }
 }

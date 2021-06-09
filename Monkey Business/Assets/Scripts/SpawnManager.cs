@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    Transform[] spawners = new Transform[2];
-    float spawnRate = 1;
+    public static SpawnManager Instance;
+    public Transform[] spawners = new Transform[2];
+    float defaultSpawnRate = 1;//SpawnRate that isn't effected by the time of a day
+    float spawnRate = 1;//SpawnRate that is effected by time of a day and climate
     float spawnTime = 0f;
     float[] sTRange = { 5, 30 };//Spawn time range
 
     private void Awake()
     {
+        Instance = this;
+
         spawners[0] = transform.Find("Left");
         spawners[1] = transform.Find("Right");
     }
@@ -37,7 +41,26 @@ public class SpawnManager : MonoBehaviour
 
             npcObj.GetComponent<Npc>().direction = direction;
             npcObj.SetActive(true);
-            spawnTime = Random.Range(sTRange[0], sTRange[1] / spawnRate);
+            spawnTime = Random.Range(sTRange[0], sTRange[1] * spawnRate);
+        }
+    }
+
+    public void CheckTime(TimeManager.TimesOfADay timeOfADay)
+    {
+        switch(timeOfADay)
+        {
+            case (TimeManager.TimesOfADay.morrning):
+                spawnRate = defaultSpawnRate * .1f;
+                break;
+            case (TimeManager.TimesOfADay.day):
+                spawnRate = defaultSpawnRate;
+                break;
+            case (TimeManager.TimesOfADay.evening):
+                spawnRate = defaultSpawnRate * .1f;
+                break;
+            case (TimeManager.TimesOfADay.night):
+                spawnRate = defaultSpawnRate * .005f;
+                break;
         }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 public class Storage : MonoBehaviour
 {
     public static Storage Instance;
+    public GameObject treeSeedObj;
+    public Transform treesTrans;
     private GameObject trash;
     private GameObject npcs;
 
@@ -17,6 +19,8 @@ public class Storage : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        treesTrans = transform.Find("Trees");
+        treeSeedObj = treesTrans.Find("Seed").gameObject;
     }
 
     public GameObject GetItemR(itemTypes itemType)

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
+    public static House Instance;
     public GameObject playerObj;
     public GameObject sleepEfUI;
     public AnimationClip sleepAnimClip1;
@@ -11,9 +12,11 @@ public class House : MonoBehaviour
     Transform canvasTrans;
     GameObject sleepButObj;
     Animator sleepAnimator;
+    int sleepSpeed = 100;
 
     private void Awake()
     {
+        Instance = this;
         canvasTrans = transform.Find("Canvas");
         sleepButObj = canvasTrans.Find("Sleep").gameObject;
         sleepAnimator = sleepEfUI.GetComponent<Animator>();
@@ -39,21 +42,37 @@ public class House : MonoBehaviour
         }
     }
 
-    public void Sleep()
+    public void Sleep(int energy)
     {
-        Debug.Log("Sleep started");
-        StartCoroutine(SleepIEnum());
+        StartCoroutine(SleepIEnum(energy));
     }
 
-    IEnumerator SleepIEnum()
+    IEnumerator SleepIEnum(int energy)
     {
-        Debug.Log("Sleep IEnum started");
         playerObj.SetActive(false);
         sleepEfUI.SetActive(true);
         sleepButObj.SetActive(false);
         sleepAnimator.SetTrigger("Sleep");
+
         yield return new WaitForSeconds(sleepAnimClip1.length);
-        TimeManager.Instance.SleepTimer();
+
+        float startTime = TimeManager.Instance.timeInS;
+        Time.timeScale = sleepSpeed;
+        Debug.Log("Sleep time = " + TimeManager.Instance.sleepTime);
+        yield return new WaitUntil(() => TimeManager.Instance.timeInS > startTime + TimeManager.Instance.sleepTime * 60);
+
+        Time.timeScale = 1;
+
+        if(energy < 0)
+        {
+            Player.energy = Player.maxEnergy;
+        }
+        else
+        {
+            Player.energy = energy;
+        }
+
+        sleepAnimator.SetTrigger("WakeUp");
         yield return new WaitForSeconds(sleepAnimClip2.length);
         playerObj.SetActive(true);
     }

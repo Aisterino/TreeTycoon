@@ -5,16 +5,23 @@ using UnityEngine;
 public class Market : MonoBehaviour
 {
     public GameObject playerObj;
+    public int marketType;
+    public static int amountOfMarkets = 3;
+    public static Market[] markets = new Market[amountOfMarkets];
+    Transform sprite;
     private Transform canvas;
     private GameObject button;
-
-    private int seedPrice = 1;
-
+    GameObject sprite2;
+    GameObject sprite3;
+    private int seedPrice = 10;
 
     private void Awake()
     {
-        canvas = transform.Find("Sprite").Find("Canvas");
+        sprite = transform.Find("Sprite");
+        canvas = sprite.Find("Canvas");
         button = canvas.Find("Button").gameObject;
+        markets[marketType] = this;
+        sprite2 = sprite.Find("Sprite2").gameObject;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -42,7 +49,7 @@ public class Market : MonoBehaviour
         }
     }
 
-    public void SellFruits()
+    public static void SellFruits()
     {
 
     }

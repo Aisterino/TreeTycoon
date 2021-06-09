@@ -5,18 +5,19 @@ using UnityEngine;
 public class Npc : MonoBehaviour
 {
     public float direction = 1;
+    public int type = 0;
     [SerializeField] private float speed = 1.5f;
     Animator animator;
     float trashDropTime;
     float[] trashDropTimeRange = { 5, 100 };
     [SerializeField] private float litteringRate = 1f;
 
-
     private void Awake()
     {
         ResestTrDrTm();
         animator = transform.Find("Sprite").GetComponent<Animator>();
         animator.SetBool("Walking", true);
+        animator.SetInteger("Type", type);
 
         if (direction < 0)
         {
@@ -35,7 +36,7 @@ public class Npc : MonoBehaviour
         transform.position = currentPosition;
         trashDropTime -= Time.deltaTime * litteringRate;
 
-        if(trashDropTime < 0)
+        if (trashDropTime < 0)
         {
             dropTrash();
         }
@@ -47,6 +48,7 @@ public class Npc : MonoBehaviour
         trashObj = Instantiate(trashObj, null);
         trashObj.transform.position = transform.position;
         trashObj.SetActive(true);
+        TrashManager.Instance.NewTrash(trashObj);
         ResestTrDrTm();
     }
 

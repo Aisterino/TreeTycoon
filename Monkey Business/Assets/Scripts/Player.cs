@@ -4,7 +4,8 @@ using UnityEngine;
 
 public static class Player
 {
-    public static int money = 0;
+    public static float speedByEnerg = 1;
+    public static int money = 100;
     public static int maxTrash = 5;
     public static int trash = 2;
     public static int maxEnergy = 100;
@@ -37,8 +38,24 @@ public static class Player
         Controls.Instance.Seeds(seeds);
     }
 
-    public static void LoseEnergy(int amount)
+    public static void ChangeEnergy(int amount)
     {
-        
+        energy += amount;
+        if(energy > 10)
+        {
+            speedByEnerg = 1;
+        }
+        if (energy <= 10)
+        {
+            speedByEnerg = .6f;
+        }
+        if(energy <= 5)
+        {
+            speedByEnerg = .3f;
+        }
+        if(energy <= 0)
+        {
+            House.Instance.Sleep(60);
+        }
     }
 }

@@ -19,15 +19,12 @@ public class PickUpCollider : MonoBehaviour
 
         if(((1<<collisionObj.layer) & trashLayer.value) != 0)
         {
-            Debug.Log("1");
             if(Player.PickUpTrash())
             {
-                Debug.Log("2");
                 Destroy(collisionObj);
             }
             else
             {
-                Debug.Log("?");
                 //Send warning
             }
         }

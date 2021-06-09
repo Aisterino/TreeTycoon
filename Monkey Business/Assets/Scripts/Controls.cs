@@ -16,6 +16,7 @@ public class Controls : MonoBehaviour
     GameObject right;
     GameObject jump;
     GameObject plantButObj;
+    GameObject cancleButObj;
     TMP_Text plantText;
 
     #region PC Controls
@@ -37,7 +38,7 @@ public class Controls : MonoBehaviour
         inputMap.Default.Left.canceled += _ => LeftFunc(false);
         inputMap.Default.Right.performed += _ => RightFunc(true);
         inputMap.Default.Right.canceled += _ => RightFunc(false);
-        inputMap.Default.Jump.performed += _ => JumpFunc();
+        //inputMap.Default.Jump.performed += _ => JumpFunc();
     }
     #endregion
 
@@ -52,6 +53,7 @@ private void Awake()
         plantText = plantButObj.transform.Find("Text").GetComponent<TMP_Text>();
         moneyAddedObj = moneyAddedCanvas.transform.Find("MoneyAdded").gameObject;
         moneyAddedAnim = moneyAddedCanvas.GetComponent<Animator>();
+        cancleButObj = transform.Find("Cancle").gameObject;
     }
 
     public void LeftFunc(bool isDown)
@@ -63,12 +65,12 @@ private void Awake()
     {
         Move(isDown, 1f);
     }
-
+    
     public void JumpFunc()
     {
         playerMovement.Jump(0, false);
     }
-
+    
     public void PickUp()
     {
         playerMovement.PickUp();
@@ -95,5 +97,41 @@ private void Awake()
     {
         plantButObj.SetActive(true);
         plantText.text = "" + amount;
+    }
+
+    public void NoMoreSeeds()
+    {
+        plantButObj.SetActive(false);
+    }
+
+    public bool areaChecked = false;
+
+    public void TryToPlant()
+    {
+        if(!areaChecked)
+        {
+            playerMovement.LockMoving();
+            playerMovement.enabled = false;
+            PlantScript.Instance.CheckArea();
+            TurnOnCancle(true);
+        }
+        else
+        {
+            playerMovement.enabled = true;
+            PlantScript.Instance.PlantFunc();
+            TurnOnCancle(false);
+        }
+    }
+
+    public void TurnOnCancle(bool value)
+    {
+        cancleButObj.SetActive(value);
+    }
+
+    public void Cancle()
+    {
+        PlantScript.Instance.Cancle();
+        playerMovement.enabled = true;
+        TurnOnCancle(false);
     }
 }
